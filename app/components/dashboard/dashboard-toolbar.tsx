@@ -2,19 +2,25 @@ import { useState } from "react";
 import type { WidgetType } from "~/lib/widget-registry";
 
 interface DashboardToolbarProps {
-  onAddWidget: (type: WidgetType) => void;
+  onAddWidget: (type: WidgetType) => boolean;
   onReset: () => void;
+  usedTypes: Set<WidgetType>;
 }
 
 const widgetOptions: { type: WidgetType; label: string }[] = [
+  { type: "stat", label: "数値" },
   { type: "bar-chart", label: "棒グラフ" },
   { type: "line-chart", label: "折れ線グラフ" },
+  { type: "area-chart", label: "面グラフ" },
+  { type: "pie-chart", label: "円グラフ" },
+  { type: "table", label: "テーブル" },
   { type: "message-list", label: "メッセージリスト" },
 ];
 
 export function DashboardToolbar({
   onAddWidget,
   onReset,
+  usedTypes,
 }: DashboardToolbarProps) {
   const [open, setOpen] = useState(false);
 
@@ -38,18 +44,22 @@ export function DashboardToolbar({
                 onClick={() => setOpen(false)}
               />
               <div className="absolute right-0 z-20 mt-1 w-44 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
-                {widgetOptions.map(({ type, label }) => (
-                  <button
-                    key={type}
-                    onClick={() => {
-                      onAddWidget(type);
-                      setOpen(false);
-                    }}
-                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                  >
-                    {label}
-                  </button>
-                ))}
+                {widgetOptions.map(({ type, label }) => {
+                  const used = usedTypes.has(type);
+                  return (
+                    <button
+                      key={type}
+                      disabled={used}
+                      onClick={() => {
+                        onAddWidget(type);
+                        setOpen(false);
+                      }}
+                      className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 dark:text-gray-300 dark:hover:bg-gray-700"
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
               </div>
             </>
           )}

@@ -15,6 +15,27 @@ export interface MessageItem {
   text: string;
 }
 
+export interface StatData {
+  value: number;
+  previous: number;
+  label: string;
+}
+
+export interface PieChartData {
+  name: string;
+  value: number;
+  color: string;
+}
+
+export interface TableRow {
+  [key: string]: string | number;
+}
+
+export interface TableData {
+  headers: string[];
+  rows: TableRow[];
+}
+
 const LABELS = ["月", "火", "水", "木", "金", "土", "日"];
 
 export function generateBarChartData(): BarChartData[] {
@@ -33,6 +54,45 @@ export function generateLineChartData(): LineChartData[] {
     }),
     value: Math.floor(Math.random() * 80) + 20,
   }));
+}
+
+export function generateAreaChartData(): LineChartData[] {
+  return generateLineChartData();
+}
+
+export function generateStatData(): StatData {
+  const value = Math.floor(Math.random() * 9000) + 1000;
+  const previous = Math.floor(Math.random() * 9000) + 1000;
+  return { value, previous, label: "総リクエスト数" };
+}
+
+const PIE_COLORS = ["#6366f1", "#22c55e", "#f59e0b", "#ef4444", "#8b5cf6"];
+const PIE_LABELS = ["直接", "検索", "SNS", "メール", "その他"];
+
+export function generatePieChartData(): PieChartData[] {
+  const total = 100;
+  const values = PIE_LABELS.map(() => Math.floor(Math.random() * 30) + 5);
+  const sum = values.reduce((a, b) => a + b, 0);
+  return PIE_LABELS.map((name, i) => ({
+    name,
+    value: Math.round((values[i] / sum) * total),
+    color: PIE_COLORS[i],
+  }));
+}
+
+const TABLE_HEADERS = ["ページ", "PV", "UU", "直帰率"];
+const TABLE_PAGES = ["/", "/about", "/product", "/contact", "/blog", "/faq"];
+
+export function generateTableData(): TableData {
+  return {
+    headers: TABLE_HEADERS,
+    rows: TABLE_PAGES.map((page) => ({
+      ページ: page,
+      PV: Math.floor(Math.random() * 5000) + 100,
+      UU: Math.floor(Math.random() * 2000) + 50,
+      直帰率: `${Math.floor(Math.random() * 60) + 20}%`,
+    })),
+  };
 }
 
 const MESSAGE_TEXTS = [

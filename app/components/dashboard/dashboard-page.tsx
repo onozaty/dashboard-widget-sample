@@ -3,14 +3,25 @@ import { DashboardGrid } from "./dashboard-grid";
 import { DashboardToolbar } from "./dashboard-toolbar";
 
 export function DashboardPage() {
-  const { items, configs, addWidget, removeWidget, updateLayout, resetLayout } =
-    useDashboardState();
+  const {
+    items,
+    configs,
+    usedTypes,
+    addWidget,
+    removeWidget,
+    updateLayout,
+    resetLayout,
+  } = useDashboardState();
 
   const isEmpty = items.length === 0;
 
   return (
     <div className="flex h-screen flex-col bg-gray-50 dark:bg-gray-950">
-      <DashboardToolbar onAddWidget={addWidget} onReset={resetLayout} />
+      <DashboardToolbar
+        onAddWidget={addWidget}
+        onReset={resetLayout}
+        usedTypes={usedTypes}
+      />
       <div className="min-h-0 flex-1 overflow-y-auto">
         {isEmpty ? (
           <div className="flex h-full flex-col items-center justify-center gap-2 text-gray-400">
