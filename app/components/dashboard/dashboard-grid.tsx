@@ -1,5 +1,6 @@
 import { useContainerWidth, ResponsiveGridLayout } from "react-grid-layout";
 import type { Layout, LayoutItem } from "react-grid-layout";
+import { GRID_COLS } from "~/lib/widget-registry";
 import { widgetRegistry } from "~/lib/widget-registry";
 import type { WidgetConfig } from "~/lib/widget-registry";
 import { WidgetShell } from "~/components/widgets/widget-shell";
@@ -10,6 +11,14 @@ interface DashboardGridProps {
   onLayoutChange: (items: readonly LayoutItem[]) => void;
   onRemoveWidget: (id: string) => void;
 }
+
+const COLS = {
+  lg: GRID_COLS,
+  md: GRID_COLS,
+  sm: GRID_COLS,
+  xs: GRID_COLS,
+  xxs: GRID_COLS,
+};
 
 export function DashboardGrid({
   items,
@@ -28,8 +37,14 @@ export function DashboardGrid({
       {mounted && (
         <ResponsiveGridLayout
           width={width}
-          layouts={{ lg: layout, md: layout, sm: layout }}
-          cols={{ lg: 12, md: 8, sm: 4 }}
+          layouts={{
+            lg: layout,
+            md: layout,
+            sm: layout,
+            xs: layout,
+            xxs: layout,
+          }}
+          cols={COLS}
           rowHeight={60}
           dragConfig={{
             handle: ".widget-drag-handle",
@@ -37,10 +52,9 @@ export function DashboardGrid({
             bounded: false,
             threshold: 3,
           }}
-          onLayoutChange={(_layout: Layout, allLayouts) => {
-            const current = allLayouts.lg ?? layout;
-            onLayoutChange(current);
-          }}
+          onLayoutChange={(_layout: Layout, allLayouts) =>
+            onLayoutChange(allLayouts.lg ?? layout)
+          }
           margin={[8, 8]}
           containerPadding={[8, 8]}
         >

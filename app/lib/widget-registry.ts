@@ -3,6 +3,8 @@ import { BarChartWidget } from "~/components/widgets/bar-chart-widget";
 import { LineChartWidget } from "~/components/widgets/line-chart-widget";
 import { MessageListWidget } from "~/components/widgets/message-list-widget";
 
+export const GRID_COLS = 12;
+
 export type WidgetType = "bar-chart" | "line-chart" | "message-list";
 
 export interface BaseWidgetConfig {

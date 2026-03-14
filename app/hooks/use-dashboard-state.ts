@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { LayoutItem } from "react-grid-layout";
 import {
+  GRID_COLS,
   widgetDefaults,
   widgetDefaultLayouts,
   type WidgetConfig,
@@ -20,6 +21,36 @@ function loadFromStorage<T>(key: string, fallback: T): T {
   }
 }
 
+function findFreePosition(
+  items: LayoutItem[],
+  w: number,
+  h: number
+): { x: number; y: number } {
+  const occupied = new Set<string>();
+  for (const item of items) {
+    for (let row = item.y; row < item.y + item.h; row++) {
+      for (let col = item.x; col < item.x + item.w; col++) {
+        occupied.add(`${col},${row}`);
+      }
+    }
+  }
+  for (let row = 0; row < 1000; row++) {
+    for (let col = 0; col + w <= GRID_COLS; col++) {
+      let fits = true;
+      outer: for (let dr = 0; dr < h; dr++) {
+        for (let dc = 0; dc < w; dc++) {
+          if (occupied.has(`${col + dc},${row + dr}`)) {
+            fits = false;
+            break outer;
+          }
+        }
+      }
+      if (fits) return { x: col, y: row };
+    }
+  }
+  return { x: 0, y: 0 };
+}
+
 export function useDashboardState() {
   const [items, setItems] = useState<LayoutItem[]>(() =>
     loadFromStorage<LayoutItem[]>(LAYOUTS_KEY, [])
@@ -34,13 +65,11 @@ export function useDashboardState() {
   }, [items, configs]);
 
   function addWidget(type: WidgetType) {
+    const { w, h, minW, minH } = widgetDefaultLayouts[type];
+    const pos = findFreePosition(items, w, h);
     const id = crypto.randomUUID();
     const config = widgetDefaults[type](id);
-    const { w, h, minW, minH } = widgetDefaultLayouts[type];
-
-    const maxY = items.reduce((acc, l) => Math.max(acc, l.y + l.h), 0);
-
-    const newItem: LayoutItem = { i: id, x: 0, y: maxY, w, h, minW, minH };
+    const newItem: LayoutItem = { i: id, x: pos.x, y: pos.y, w, h, minW, minH };
     setItems((prev) => [...prev, newItem]);
     setConfigs((prev) => ({ ...prev, [id]: config }));
   }
