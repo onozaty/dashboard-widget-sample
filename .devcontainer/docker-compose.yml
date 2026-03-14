@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+      - app-node-modules:/workspaces/app/node_modules
+    command: sleep infinity
+    environment:
+      TZ: Asia/Tokyo
+
+volumes:
+  app-node-modules:
