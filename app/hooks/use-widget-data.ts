@@ -1,25 +1,39 @@
-import { useEffect } from "react";
-import { useFetcher } from "react-router";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { fetchWidgetData } from "~/lib/data-source";
 import type { WidgetType } from "~/lib/widget-registry";
 
 export function useWidgetData<T>(type: WidgetType, refreshIntervalMs: number) {
-  const fetcher = useFetcher<T>();
+  const [data, setData] = useState<T | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const abortRef = useRef<AbortController | null>(null);
+
+  const load = useCallback(() => {
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    fetchWidgetData<T>(type).then((result) => {
+      if (!controller.signal.aborted) {
+        setData(result);
+        setIsLoading(false);
+      }
+    }).catch(() => {
+      // abort による中断は無視する
+    });
+  }, [type]);
 
   useEffect(() => {
-    const url = `/api/widget-data?type=${type}`;
-    fetcher.load(url);
+    const id = setInterval(load, refreshIntervalMs);
+    return () => {
+      clearInterval(id);
+      abortRef.current?.abort();
+    };
+  }, [load, refreshIntervalMs]);
 
-    const id = setInterval(() => {
-      fetcher.load(url);
-    }, refreshIntervalMs);
+  // 初回ロード（マウント時・type変更時）
+  useEffect(() => {
+    load();
+  }, [load]);
 
-    return () => clearInterval(id);
-    // fetcher を deps に含めると無限ループになるため意図的に除外
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type, refreshIntervalMs]);
-
-  return {
-    data: fetcher.data as T | undefined,
-    isLoading: fetcher.state === "loading",
-  };
+  return { data, isLoading };
 }
