@@ -77,6 +77,10 @@ export function DashboardGrid({
             }}
             cols={COLS}
             rowHeight={rowHeight}
+            resizeConfig={{
+              enabled: true,
+              handles: ["s", "w", "e", "n", "sw", "nw", "se", "ne"],
+            }}
             dragConfig={{
               handle: ".widget-drag-handle",
               enabled: true,
