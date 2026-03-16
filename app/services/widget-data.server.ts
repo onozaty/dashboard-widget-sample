@@ -1,6 +1,8 @@
 export type {
   BarChartData,
   LineChartData,
+  AreaChartData,
+  AreaChartSeries,
   MessageItem,
   StatData,
   PieChartData,

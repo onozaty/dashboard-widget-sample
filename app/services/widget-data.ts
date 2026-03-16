@@ -9,6 +9,17 @@ export interface LineChartData {
   value: number;
 }
 
+export interface AreaChartData {
+  timestamp: string;
+  [series: string]: string | number;
+}
+
+export interface AreaChartSeries {
+  key: string;
+  label: string;
+  color: string;
+}
+
 export interface MessageItem {
   id: string;
   timestamp: string;

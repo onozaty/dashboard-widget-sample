@@ -49,7 +49,7 @@ export function PieChartWidget({ config }: PieChartWidgetProps) {
           ))}
         </Pie>
         <Tooltip formatter={(value) => `${value}%`} />
-        <Legend />
+        <Legend iconSize={10} wrapperStyle={{ fontSize: "11px" }} />
       </PieChart>
     </ResponsiveContainer>
   );

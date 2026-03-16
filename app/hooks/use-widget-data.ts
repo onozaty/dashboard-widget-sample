@@ -12,14 +12,16 @@ export function useWidgetData<T>(type: WidgetType, refreshIntervalMs: number) {
     const controller = new AbortController();
     abortRef.current = controller;
 
-    fetchWidgetData<T>(type).then((result) => {
-      if (!controller.signal.aborted) {
-        setData(result);
-        setIsLoading(false);
-      }
-    }).catch(() => {
-      // abort による中断は無視する
-    });
+    fetchWidgetData<T>(type)
+      .then((result) => {
+        if (!controller.signal.aborted) {
+          setData(result);
+          setIsLoading(false);
+        }
+      })
+      .catch(() => {
+        // abort による中断は無視する
+      });
   }, [type]);
 
   useEffect(() => {

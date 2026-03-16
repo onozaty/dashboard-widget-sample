@@ -17,3 +17,27 @@ body {
 html.dark {
   color-scheme: dark;
 }
+
+.recharts-default-tooltip {
+  font-size: 11px !important;
+}
+
+html.dark .recharts-default-tooltip {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+  border-radius: 6px;
+  color: #d1d5db !important;
+}
+
+html.dark .recharts-tooltip-label,
+html.dark .recharts-tooltip-item {
+  color: #d1d5db !important;
+}
+
+html.dark .react-resizable-handle::after {
+  border-color: #6b7280;
+}
+
+html.dark .react-resizable-handle:hover::after {
+  border-color: #d1d5db;
+}

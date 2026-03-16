@@ -1,4 +1,6 @@
 import type {
+  AreaChartData,
+  AreaChartSeries,
   BarChartData,
   LineChartData,
   MessageItem,
@@ -27,8 +29,23 @@ export function generateLineChartData(): LineChartData[] {
   }));
 }
 
-export function generateAreaChartData(): LineChartData[] {
-  return generateLineChartData();
+export const AREA_CHART_SERIES: AreaChartSeries[] = [
+  { key: "sales", label: "売上", color: "#f59e0b" },
+  { key: "visits", label: "訪問数", color: "#6366f1" },
+  { key: "orders", label: "注文数", color: "#22c55e" },
+];
+
+export function generateAreaChartData(): AreaChartData[] {
+  const now = Date.now();
+  return Array.from({ length: 20 }, (_, i) => ({
+    timestamp: new Date(now - (19 - i) * 60_000).toLocaleTimeString("ja-JP", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+    sales: Math.floor(Math.random() * 80) + 20,
+    visits: Math.floor(Math.random() * 60) + 30,
+    orders: Math.floor(Math.random() * 40) + 10,
+  }));
 }
 
 export function generateStatData(): StatData {
@@ -79,7 +96,13 @@ const MESSAGE_TEXTS = [
   "デプロイが完了しました",
 ];
 
-const LEVELS: MessageItem["level"][] = ["info", "info", "info", "warn", "error"];
+const LEVELS: MessageItem["level"][] = [
+  "info",
+  "info",
+  "info",
+  "warn",
+  "error",
+];
 
 export function generateMessages(maxMessages: number): MessageItem[] {
   const count = Math.min(maxMessages, MESSAGE_TEXTS.length);
