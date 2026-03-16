@@ -1,4 +1,5 @@
 import { useDashboardState } from "~/hooks/use-dashboard-state";
+import { useTheme } from "~/hooks/use-theme";
 import { DashboardGrid } from "./dashboard-grid";
 import { DashboardToolbar } from "./dashboard-toolbar";
 
@@ -12,6 +13,7 @@ export function DashboardPage() {
     updateLayout,
     resetLayout,
   } = useDashboardState();
+  const { theme, toggle } = useTheme();
 
   const isEmpty = items.length === 0;
 
@@ -21,6 +23,8 @@ export function DashboardPage() {
         onAddWidget={addWidget}
         onReset={resetLayout}
         usedTypes={usedTypes}
+        theme={theme}
+        onToggleTheme={toggle}
       />
       <div className="min-h-0 flex-1 overflow-y-auto">
         {isEmpty ? (
