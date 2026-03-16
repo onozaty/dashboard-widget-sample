@@ -18,6 +18,8 @@ const widgetOptions: { type: WidgetType; label: string }[] = [
   { type: "pie-chart", label: "円グラフ" },
   { type: "table", label: "テーブル" },
   { type: "message-list", label: "メッセージリスト" },
+  { type: "gauge", label: "ゲージ" },
+  { type: "radar", label: "レーダー" },
 ];
 
 export function DashboardToolbar({

@@ -39,6 +39,19 @@ export interface PieChartData {
   color: string;
 }
 
+export interface GaugeData {
+  value: number;
+  min: number;
+  max: number;
+  label: string;
+  unit: string;
+}
+
+export interface RadarData {
+  subject: string;
+  value: number;
+}
+
 export interface TableRow {
   [key: string]: string | number;
 }

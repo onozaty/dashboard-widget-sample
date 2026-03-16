@@ -1,6 +1,8 @@
 import type { ComponentType } from "react";
 import { AreaChartWidget } from "~/components/widgets/area-chart-widget";
 import { BarChartWidget } from "~/components/widgets/bar-chart-widget";
+import { GaugeWidget } from "~/components/widgets/gauge-widget";
+import { RadarWidget } from "~/components/widgets/radar-widget";
 import { StatWidget } from "~/components/widgets/stat-widget";
 import { LineChartWidget } from "~/components/widgets/line-chart-widget";
 import { MessageListWidget } from "~/components/widgets/message-list-widget";
@@ -16,7 +18,9 @@ export type WidgetType =
   | "pie-chart"
   | "stat"
   | "message-list"
-  | "table";
+  | "table"
+  | "gauge"
+  | "radar";
 
 export interface BaseWidgetConfig {
   id: string;
@@ -59,6 +63,14 @@ export interface TableWidgetConfig extends BaseWidgetConfig {
   type: "table";
 }
 
+export interface GaugeWidgetConfig extends BaseWidgetConfig {
+  type: "gauge";
+}
+
+export interface RadarWidgetConfig extends BaseWidgetConfig {
+  type: "radar";
+}
+
 export type WidgetConfig =
   | BarChartWidgetConfig
   | LineChartWidgetConfig
@@ -66,7 +78,9 @@ export type WidgetConfig =
   | PieChartWidgetConfig
   | StatWidgetConfig
   | MessageListWidgetConfig
-  | TableWidgetConfig;
+  | TableWidgetConfig
+  | GaugeWidgetConfig
+  | RadarWidgetConfig;
 
 export interface WidgetProps<T extends WidgetConfig = WidgetConfig> {
   config: T;
@@ -83,6 +97,8 @@ export const widgetRegistry: Record<WidgetType, WidgetComponent> = {
   stat: StatWidget,
   "message-list": MessageListWidget,
   table: TableWidget,
+  gauge: GaugeWidget,
+  radar: RadarWidget,
 };
 
 export const widgetDefaults: Record<WidgetType, (id: string) => WidgetConfig> =
@@ -135,6 +151,18 @@ export const widgetDefaults: Record<WidgetType, (id: string) => WidgetConfig> =
       title: "テーブル",
       refreshIntervalMs: 7000,
     }),
+    gauge: (id) => ({
+      id,
+      type: "gauge",
+      title: "ゲージ",
+      refreshIntervalMs: 3000,
+    }),
+    radar: (id) => ({
+      id,
+      type: "radar",
+      title: "レーダー",
+      refreshIntervalMs: 5000,
+    }),
   };
 
 export const widgetDefaultLayouts: Record<
@@ -148,4 +176,6 @@ export const widgetDefaultLayouts: Record<
   stat: { w: 3, h: 3, minW: 2, minH: 2 },
   "message-list": { w: 3, h: 6, minW: 2, minH: 2 },
   table: { w: 6, h: 6, minW: 2, minH: 2 },
+  gauge: { w: 3, h: 4, minW: 2, minH: 3 },
+  radar: { w: 4, h: 5, minW: 3, minH: 3 },
 };

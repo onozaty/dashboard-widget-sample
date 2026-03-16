@@ -22,6 +22,10 @@ export async function fetchWidgetData<T>(type: WidgetType): Promise<T> {
         return mock.generateMessages(20) as T;
       case "table":
         return mock.generateTableData() as T;
+      case "gauge":
+        return mock.generateGaugeData() as T;
+      case "radar":
+        return mock.generateRadarData() as T;
     }
   }
 

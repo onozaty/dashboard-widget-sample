@@ -2,6 +2,8 @@ import type {
   AreaChartData,
   AreaChartSeries,
   BarChartData,
+  GaugeData,
+  RadarData,
   LineChartData,
   MessageItem,
   PieChartData,
@@ -115,5 +117,24 @@ export function generateMessages(maxMessages: number): MessageItem[] {
     }),
     level: LEVELS[Math.floor(Math.random() * LEVELS.length)],
     text: MESSAGE_TEXTS[Math.floor(Math.random() * MESSAGE_TEXTS.length)],
+  }));
+}
+
+export function generateGaugeData(): GaugeData {
+  return {
+    value: Math.floor(Math.random() * 80) + 10,
+    min: 0,
+    max: 100,
+    label: "CPU使用率",
+    unit: "%",
+  };
+}
+
+const RADAR_SUBJECTS = ["速度", "品質", "コスト", "保守性", "安全性", "可用性"];
+
+export function generateRadarData(): RadarData[] {
+  return RADAR_SUBJECTS.map((subject) => ({
+    subject,
+    value: Math.floor(Math.random() * 60) + 40,
   }));
 }

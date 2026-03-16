@@ -2,6 +2,8 @@ import { data } from "react-router";
 import {
   generateAreaChartData,
   generateBarChartData,
+  generateGaugeData,
+  generateRadarData,
   generateStatData,
   generateLineChartData,
   generateMessages,
@@ -29,6 +31,10 @@ export async function loader({ request }: Route.LoaderArgs) {
       return data(generateMessages(20));
     case "table":
       return data(generateTableData());
+    case "gauge":
+      return data(generateGaugeData());
+    case "radar":
+      return data(generateRadarData());
     default:
       return data({ error: "Unknown widget type" }, { status: 400 });
   }

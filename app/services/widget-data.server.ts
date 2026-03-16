@@ -6,6 +6,8 @@ export type {
   MessageItem,
   StatData,
   PieChartData,
+  GaugeData,
+  RadarData,
   TableRow,
   TableData,
 } from "./widget-data";
@@ -18,4 +20,6 @@ export {
   generatePieChartData,
   generateTableData,
   generateMessages,
+  generateGaugeData,
+  generateRadarData,
 } from "./widget-data.mock";
